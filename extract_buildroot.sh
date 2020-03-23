@@ -4,7 +4,7 @@
 CURRENT_DIR="$(pwd)"
 
 # Buildroot parameters
-BUILDROOT_VERSION="2017.02.1"
+BUILDROOT_VERSION="2019.02.9"
 BUILDROOT_URL="https://buildroot.org/downloads"
 
 BUILDROOT_GZIP="buildroot-${BUILDROOT_VERSION}.tar.gz"
