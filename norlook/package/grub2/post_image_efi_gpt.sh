@@ -66,3 +66,5 @@ mcopy -bsp -i efi-part.vfat bzImage ::bzImage
 # dd if=efi-part.vfat of=disk.img bs=512 count=$efi_part_size  seek=$efi_part_start  conv=notrunc
 # dd if=rootfs.ext2   of=disk.img bs=512 count=$root_part_size seek=$root_part_start conv=notrunc
 # <-- AER
+
+exit 0
