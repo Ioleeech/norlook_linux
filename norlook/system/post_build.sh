@@ -8,4 +8,8 @@ rm -fr ${TARGET_DIR}/dev/pts
 rm -fr ${TARGET_DIR}/dev/shm
 rm -f  ${TARGET_DIR}/dev/*
 
+# Remove unused directories
+rm -fr ${TARGET_DIR}/media
+rm -fr ${TARGET_DIR}/opt
+
 exit 0

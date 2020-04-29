@@ -4,7 +4,7 @@ BR2_ARCH_HAS_MMU_MANDATORY=y
 BR2_x86_64=y
 BR2_ARCH="x86_64"
 BR2_ENDIAN="LITTLE"
-BR2_GCC_TARGET_ARCH="atom"
+BR2_GCC_TARGET_ARCH="silvermont"
 BR2_BINFMT_SUPPORTS_SHARED=y
 BR2_BINFMT_ELF=y
 BR2_X86_CPU_HAS_MMX=y
@@ -14,8 +14,8 @@ BR2_X86_CPU_HAS_SSE3=y
 BR2_X86_CPU_HAS_SSSE3=y
 BR2_X86_CPU_HAS_SSE4=y
 BR2_X86_CPU_HAS_SSE42=y
-BR2_x86_atom=y
-BR2_TARGET_OPTIMIZATION="-march=atom -mtune=atom -fpmath=sse -flto -ffast-math"
+BR2_x86_silvermont=y
+BR2_TARGET_OPTIMIZATION="-march=silvermont -mtune=silvermont -mfpmath=sse -m8bit-idiv"
 
 # Commands
 BR2_DL_DIR="$(TOPDIR)/../distfiles"
