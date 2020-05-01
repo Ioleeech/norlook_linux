@@ -16,15 +16,20 @@ if [ ! -d "${CURRENT_DIR}/distfiles" ]; then
     mkdir -p "${CURRENT_DIR}/distfiles"
 fi
 
+if [ ! -d "${CURRENT_DIR}/distfiles/buildroot" ]; then
+    rm   -rf "${CURRENT_DIR}/distfiles/buildroot"
+    mkdir -p "${CURRENT_DIR}/distfiles/buildroot"
+fi
+
 DOWNLOAD_GZIP="N"
-tar -tf "${CURRENT_DIR}/distfiles/${BUILDROOT_GZIP}" > /dev/null 2> /dev/null || DOWNLOAD_GZIP="Y"
+tar -tf "${CURRENT_DIR}/distfiles/buildroot/${BUILDROOT_GZIP}" > /dev/null 2> /dev/null || DOWNLOAD_GZIP="Y"
 
 if [ "X${DOWNLOAD_GZIP}" != "XN" ]; then
-    rm   -f "${CURRENT_DIR}/distfiles/${BUILDROOT_GZIP}"
-    wget --passive-ftp -nd -t 3 -P "${CURRENT_DIR}/distfiles" "${BUILDROOT_URL}/${BUILDROOT_GZIP}"
+    rm   -f "${CURRENT_DIR}/distfiles/buildroot/${BUILDROOT_GZIP}"
+    wget --passive-ftp -nd -t 3 -P "${CURRENT_DIR}/distfiles/buildroot" "${BUILDROOT_URL}/${BUILDROOT_GZIP}"
 fi
 
 # Main routine
 rm  -rf  "${CURRENT_DIR}/buildroot"
-tar -xzf "${CURRENT_DIR}/distfiles/${BUILDROOT_GZIP}" -C "${CURRENT_DIR}"
+tar -xzf "${CURRENT_DIR}/distfiles/buildroot/${BUILDROOT_GZIP}" -C "${CURRENT_DIR}"
 mv  -f   "${CURRENT_DIR}/buildroot-${BUILDROOT_VERSION}" "${CURRENT_DIR}/buildroot"
