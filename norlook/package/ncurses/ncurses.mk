@@ -1,4 +1,4 @@
-NCURSES_CONF_OPTS += --exec-prefix= --bindir=/bin --sbindir=/sbin --libdir=/usr/lib --with-terminfo-dirs=/lib
+NCURSES_CONF_OPTS += --exec-prefix= --bindir=/bin --sbindir=/sbin --libdir=/usr/lib --with-default-terminfo-dir=/lib/terminfo
 
 NCURSES_USR_LIBS = libformw libmenuw libncursesw libpanelw
 
@@ -9,13 +9,18 @@ define NCURSES_INSTALL_LIBS_NORLOOK
 endef
 
 define NCURSES_CLEAN_TARGET_NORLOOK
-	rm -f $(TARGET_DIR)/bin/ncursesw6-config
+	rm -f $(TARGET_DIR)/bin/ncursesw6-config; \
+	rm -f $(TARGET_DIR)/bin/captoinfo; \
+	rm -f $(TARGET_DIR)/bin/infotocap; \
+	rm -f $(TARGET_DIR)/bin/tic; \
+	rm -f $(TARGET_DIR)/bin/toe; \
+	rm -f $(TARGET_DIR)/bin/tabs; \
+	rm -f $(TARGET_DIR)/bin/infocmp
 endef
 
 define NCURSES_UPDATE_TERMINFO_NORLOOK
 	rm -rf $(TARGET_DIR)/usr/share/terminfo; \
-	rm -f $(TARGET_DIR)/usr/lib/terminfo; \
-	cp -rf $(STAGING_DIR)/usr/share/terminfo $(TARGET_DIR)/usr/share
+	rm -f  $(TARGET_DIR)/usr/lib/terminfo
 endef
 
 NCURSES_POST_INSTALL_TARGET_HOOKS += NCURSES_INSTALL_LIBS_NORLOOK
@@ -30,6 +35,13 @@ endef
 
 NCURSES_POST_INSTALL_TARGET_HOOKS += NCURSES_UPDATE_TOOLS_NORLOOK
 endif
+
+define NCURSES_STAGING_TERMINFO_NORLOOK
+	rm -f  $(STAGING_DIR)/usr/share/terminfo; \
+	ln -sf $(STAGING_DIR)/lib/terminfo $(STAGING_DIR)/usr/share/terminfo
+endef
+
+NCURSES_PRE_INSTALL_TARGET_HOOKS += NCURSES_STAGING_TERMINFO_NORLOOK
 
 define NCURSES_INSTALL_BIN_NORLOOK
 	mv -f $(STAGING_DIR)/bin/ncursesw6-config $(STAGING_DIR)/usr/bin/
