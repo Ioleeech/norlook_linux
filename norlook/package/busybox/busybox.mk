@@ -2,7 +2,7 @@ undefine BUSYBOX_INSTALL_UDHCPC_SCRIPT
 undefine BUSYBOX_INSTALL_TARGET_CMDS
 
 define BUSYBOX_INSTALL_UDHCPC_SCRIPT
-	grep -q CONFIG_UDHCPC=y $(@D)/.config && $(INSTALL) -m 0755 -D package/busybox/udhcpc.script $(TARGET_DIR)/etc/udhcpc/default.script
+	grep -q CONFIG_UDHCPC=y $(@D)/.config && $(INSTALL) -m 0755 -D package/busybox/udhcpc.script $(TARGET_DIR)/lib/udhcpc/default.script
 endef
 
 define BUSYBOX_INSTALL_TARGET_CMDS

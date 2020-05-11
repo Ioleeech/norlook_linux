@@ -7,6 +7,7 @@ endef
 GPM_TEST_TOOLS = gpm-root disable-paste display-buttons display-coords get-versions hltest mev mouse-test
 
 define GPM_CLEAN_TARGET_NORLOOK
+	rm -f $(TARGET_DIR)/etc/gpm-root.conf; \
 	for i in $(GPM_TEST_TOOLS); do \
 		rm -f $(TARGET_DIR)/bin/$${i}; \
 	done
