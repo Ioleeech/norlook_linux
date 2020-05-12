@@ -1,0 +1,9 @@
+LIBOPENSSL_USR_LIBS = libcrypto libssl
+
+define LIBOPENSSL_INSTALL_LIBS_NORLOOK
+	for i in $(LIBOPENSSL_USR_LIBS); do \
+		mv -f $(TARGET_DIR)/usr/lib/$${i}.so* $(TARGET_DIR)/lib/; \
+	done
+endef
+
+LIBOPENSSL_POST_INSTALL_TARGET_HOOKS += LIBOPENSSL_INSTALL_LIBS_NORLOOK
