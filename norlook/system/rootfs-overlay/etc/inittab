@@ -15,7 +15,7 @@ si1::sysinit:/bin/mount -t proc  proc  /proc
 si2::sysinit:/bin/mount / -o remount,ro
 
 # Prepare /dev
-si3::sysinit:/bin/mount -t devtmpfs devtmpfs /dev
+# si3::sysinit:/bin/mount -t devtmpfs devtmpfs /dev
 
 si4::sysinit:/bin/mkdir -p /dev/pts
 si5::sysinit:/bin/mount -t devpts devpts /dev/pts -o gid=5,mode=620
@@ -25,24 +25,19 @@ si7::sysinit:/bin/mount -t tmpfs tmpfs /dev/shm -o mode=0777
 
 si8::sysinit:/bin/mount -t tmpfs tmpfs /tmp
 si9::sysinit:/bin/mount -o bind  /tmp  /run
-si10::sysinit:/bin/mount -o bind /tmp  /var/run
+si10::sysinit:/bin/mount -o bind /tmp  /var/log
+si11::sysinit:/bin/mount -o bind /tmp  /var/run
 
-si11::sysinit:/sbin/udevd -d
-si12::sysinit:/sbin/udevadm trigger --type=subsystems --action=add
-si13::sysinit:/sbin/udevadm trigger --type=devices    --action=add
-si14::sysinit:/sbin/udevadm settle  --timeout=30
-
-si15::sysinit:/bin/ln -sf /proc/self/fd   /dev/fd
-si16::sysinit:/bin/ln -sf /proc/self/fd/0 /dev/stdin
-si17::sysinit:/bin/ln -sf /proc/self/fd/1 /dev/stdout
-si18::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
-si19::sysinit:/bin/ln -sf /tmp/log        /dev/log
+si12::sysinit:/sbin/udevd -d
+si13::sysinit:/sbin/udevadm trigger --type=subsystems --action=add
+si14::sysinit:/sbin/udevadm trigger --type=devices    --action=add
+si15::sysinit:/sbin/udevadm settle  --timeout=30
 
 # Mount the rest
-si20::sysinit:/bin/mount -a
+si16::sysinit:/bin/mount -a
 
 # Set hostname
-si21::sysinit:/bin/hostname -F /etc/hostname
+si17::sysinit:/bin/hostname -F /etc/hostname
 
 # Startup the system
 #rcS:12345:wait:/etc/init.d/rcS

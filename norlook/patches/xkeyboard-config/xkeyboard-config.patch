@@ -1,0 +1,28 @@
+diff -Nura xkeyboard-config-2.28/keycodes/evdev xkeyboard-config-2.28/keycodes/evdev
+--- xkeyboard-config-2.28/keycodes/evdev	2019-10-20 03:52:38.000000000 +0700
++++ xkeyboard-config-2.28/keycodes/evdev	2020-05-26 02:03:14.494843759 +0700
+@@ -284,10 +284,6 @@
+ 	<I254> = 254;	// #define KEY_WWAN                246
+ 	<I255> = 255;	// #define KEY_RFKILL              247
+ 
+-	<I372> = 372;   // #define KEY_FAVORITES           364
+-	<I382> = 382;   // #define KEY_KEYBOARD            374
+-	<I569> = 569;   // #define KEY_ROTATE_LOCK_TOGGLE  561
+-
+ 	// Fake keycodes for virtual keys
+ 	<LVL3> =   92;
+ 	<MDSW> =   203;
+diff -Nura xkeyboard-config-2.28/symbols/inet xkeyboard-config-2.28/symbols/inet
+--- xkeyboard-config-2.28/symbols/inet	2019-10-20 03:52:38.000000000 +0700
++++ xkeyboard-config-2.28/symbols/inet	2020-05-26 02:03:36.102843439 +0700
+@@ -218,10 +218,6 @@
+     key <I254>   {      [ XF86WWAN              ]       }; // KEY_WWAN
+     key <I255>   {      [ XF86RFKill            ]       }; // KEY_RFKILL
+ 
+-    key <I372>  {       [ XF86Favorites          ]       };
+-    key <I382>  {       [ XF86Keyboard           ]       };
+-    key <I569>  {       [ XF86RotationLockToggle ]       };
+-
+     key <FK13>   {      [ XF86Tools         ]       };
+     key <FK14>   {      [ XF86Launch5       ]       };
+     key <FK15>   {      [ XF86Launch6       ]       };

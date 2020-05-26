@@ -14,7 +14,7 @@ root_part_uuid=$(uuidgen)
 
 # Boot partition offset and size, in 512-byte sectors
 efi_part_start=64
-efi_part_size=32768
+efi_part_size=262144
 
 # AER -->
 # Rootfs partition offset and size, in 512-byte sectors
@@ -42,10 +42,11 @@ EOF
 # Create EFI system partition
 rm -f efi-part.vfat
 dd if=/dev/zero of=efi-part.vfat bs=512 count=0 seek=$efi_part_size
-mkdosfs  efi-part.vfat
+mkdosfs efi-part.vfat
 mcopy -bsp -i efi-part.vfat efi-part/startup.nsh ::startup.nsh
-mcopy -bsp -i efi-part.vfat efi-part/EFI ::EFI
-mcopy -bsp -i efi-part.vfat bzImage ::bzImage
+mcopy -bsp -i efi-part.vfat efi-part/EFI         ::EFI
+mcopy -bsp -i efi-part.vfat bzImage              ::bzImage
+mcopy -bsp -i efi-part.vfat rootfs.cpio          ::initrd
 
 # AER -->
 # rm -f disk.img

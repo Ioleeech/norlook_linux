@@ -1,0 +1,125 @@
+diff -Nura xf86-input-tslib-1.1.1/80-tslib.conf xf86-input-tslib-1.1.1/80-tslib.conf
+--- xf86-input-tslib-1.1.1/80-tslib.conf	2017-07-26 14:28:16.000000000 +0700
++++ xf86-input-tslib-1.1.1/80-tslib.conf	2020-05-26 01:56:41.842849581 +0700
+@@ -6,6 +6,6 @@
+ Section "InputClass"
+ 	Identifier "tslib touchscreen catchall"
+ 	MatchIsTouchscreen "on"
+-	MatchDevicePath "/dev/input/*"
++	MatchDevicePath "/dev/input/event*"
+ 	Driver "tslib"
+ EndSection
+diff -Nura xf86-input-tslib-1.1.1/src/tslib.c xf86-input-tslib-1.1.1/src/tslib.c
+--- xf86-input-tslib-1.1.1/src/tslib.c	2017-09-10 16:12:27.000000000 +0700
++++ xf86-input-tslib-1.1.1/src/tslib.c	2017-11-15 20:04:34.000000000 +0700
+@@ -24,6 +24,8 @@
+  * TORTIOUS  ACTION, ARISING    OUT OF OR   IN  CONNECTION  WITH THE USE    OR
+  * PERFORMANCE OF THIS SOFTWARE.
+  *
++ * SPDX-License-Identifier: MIT
++ * License-Filename: COPYING
+  */
+ 
+ /* tslib input driver */
+@@ -48,6 +50,7 @@
+ #include <sys/time.h>
+ #include <time.h>
+ #include <stdint.h>
++#include <fcntl.h>
+ 
+ #if defined (__FreeBSD__)
+ #include <dev/evdev/input.h>
+@@ -417,6 +420,7 @@
+ 	struct ts_lib_version_data *ver = ts_libversion();
+ #endif
+ 	long absbit[BITS_TO_LONGS(ABS_CNT)];
++	int fd_temp;
+ 
+ 	priv = calloc(1, sizeof (struct ts_priv));
+ 	if (!priv)
+@@ -442,7 +446,8 @@
+ 		return BadValue;
+ 	}
+ 
+-	xf86IDrvMsg(pInfo, X_INFO, "using libts version %X\n", ver->version_num);
++	xf86IDrvMsg(pInfo, X_INFO, "using libts ABI version %d (%06X)\n",
++		    ver->version_num >> 16, ver->version_num);
+ #else
+ 	priv->ts = ts_open(s, 1);
+ 	if (!priv->ts) {
+@@ -460,8 +465,6 @@
+ 
+ 	priv->slots = 0;
+ 
+-	pInfo->fd = ts_fd(priv->ts);
+-
+ 	ts_error_fn = errfn;
+ 
+ 	/* process generic options */
+@@ -472,7 +475,24 @@
+ 	if (!priv->valuators)
+ 		return BadValue;
+ 
+-	if (ioctl(pInfo->fd, EVIOCGBIT(EV_ABS, sizeof(absbit)), absbit) < 0) {
++	pInfo->fd = ts_fd(priv->ts);
++
++#ifdef TSLIB_VERSION_EVENTPATH
++	fd_temp = open(ts_get_eventpath(priv->ts), O_RDONLY);
++#else
++	if (!s) {
++		xf86IDrvMsg(pInfo, X_ERROR, "Please provide Option path or Device");
++		return BadValue;
++	}
++
++	fd_temp = open(s, O_RDONLY);
++#endif
++	if (fd_temp == -1) {
++		xf86IDrvMsg(pInfo, X_ERROR, "Couldn't open %s\n", s);
++		return BadValue;
++	}
++
++	if (ioctl(fd_temp, EVIOCGBIT(EV_ABS, sizeof(absbit)), absbit) < 0) {
+ 		xf86IDrvMsg(pInfo, X_ERROR, "ioctl EVIOCGBIT failed");
+ 		return BadValue;
+ 	}
+@@ -535,13 +555,13 @@
+ 	}
+ 
+ 	if (priv->abs_x_only) {
+-		if (ioctl(pInfo->fd, EVIOCGABS(ABS_X), &absinfo) < 0) {
++		if (ioctl(fd_temp, EVIOCGABS(ABS_X), &absinfo) < 0) {
+ 			xf86IDrvMsg(pInfo, X_ERROR, "ioctl EVIOGABS failed");
+ 			return BadValue;
+ 		}
+ 		priv->width = absinfo.maximum;
+ 
+-		if (ioctl(pInfo->fd, EVIOCGABS(ABS_Y), &absinfo) < 0) {
++		if (ioctl(fd_temp, EVIOCGABS(ABS_Y), &absinfo) < 0) {
+ 			xf86IDrvMsg(pInfo, X_ERROR, "ioctl EVIOGABS failed");
+ 			return BadValue;
+ 		}
+@@ -557,13 +577,13 @@
+ 			priv->pmax = absinfo.maximum;
+ 		}
+ 	} else {
+-		if (ioctl(pInfo->fd, EVIOCGABS(ABS_MT_POSITION_X), &absinfo) < 0) {
++		if (ioctl(fd_temp, EVIOCGABS(ABS_MT_POSITION_X), &absinfo) < 0) {
+ 			xf86IDrvMsg(pInfo, X_ERROR, "ioctl EVIOGABS failed");
+ 			return BadValue;
+ 		}
+ 		priv->width = absinfo.maximum;
+ 
+-		if (ioctl(pInfo->fd, EVIOCGABS(ABS_MT_POSITION_Y), &absinfo) < 0) {
++		if (ioctl(fd_temp, EVIOCGABS(ABS_MT_POSITION_Y), &absinfo) < 0) {
+ 			xf86IDrvMsg(pInfo, X_ERROR, "ioctl EVIOGABS failed");
+ 			return BadValue;
+ 		}
+@@ -580,6 +600,8 @@
+ 		}
+ 	}
+ 
++	close(fd_temp);
++
+ 	/* Return the configured device */
+ 	return Success;
+ }
