@@ -14,7 +14,7 @@ root_part_uuid=$(uuidgen)
 
 # Boot partition offset and size, in 512-byte sectors
 efi_part_start=64
-efi_part_size=262144
+efi_part_size=131072
 
 # AER -->
 # Rootfs partition offset and size, in 512-byte sectors
@@ -34,8 +34,7 @@ set timeout="0"
 set default="0"
 
 menuentry "Norlook Linux" {
-	linux  /bzimage root=/dev/ram0 rootwait console=tty1
-	initrd /initrd
+	linux /bzImage root=/dev/ram0 rootwait console=tty1
 }
 EOF
 
@@ -46,7 +45,6 @@ mkdosfs efi-part.vfat
 mcopy -bsp -i efi-part.vfat efi-part/startup.nsh ::startup.nsh
 mcopy -bsp -i efi-part.vfat efi-part/EFI         ::EFI
 mcopy -bsp -i efi-part.vfat bzImage              ::bzImage
-mcopy -bsp -i efi-part.vfat rootfs.cpio          ::initrd
 
 # AER -->
 # rm -f disk.img
