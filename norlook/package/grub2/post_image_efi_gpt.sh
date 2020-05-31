@@ -34,7 +34,7 @@ set timeout="0"
 set default="0"
 
 menuentry "Norlook Linux" {
-	linux /bzImage root=/dev/ram0 rootwait console=tty1
+	linux /bzImage root=/dev/ram0 rootwait console=tty1 fbcon=rotate:1
 }
 EOF
 
