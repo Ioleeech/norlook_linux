@@ -1,0 +1,15 @@
+################################################################################
+# /etc/inputrc
+#
+# Global inputrc for libreadline.
+# Attempt to put different TERMs together in one readline init file.
+# See readline(3readline) and `info readline' for more information.
+################################################################################
+
+# Be 8 bit clean
+set input-meta on
+set output-meta on
+# set bell-style visible
+
+# Include codes by Werner Fink, <werner@suse.de>
+$include /etc/inputrc.keys

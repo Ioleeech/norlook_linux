@@ -1,0 +1,12 @@
+diff -Nura sysvinit-2.96/src/Makefile sysvinit-2.96/src/Makefile
+--- sysvinit-2.96/src/Makefile	2019-09-12 00:43:12.000000000 +0700
++++ sysvinit-2.96/src/Makefile	2020-12-28 03:22:11.566507996 +0700
+@@ -10,7 +10,7 @@
+ 
+ CPPFLAGS =
+ CFLAGS  ?= -O2
+-override CFLAGS += -ansi -fomit-frame-pointer -fstack-protector-strong -W -Wall -Wunreachable-code -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -D_XOPEN_SOURCE -D_GNU_SOURCE -DVERSION=\"$(VERSION)\"
++override CFLAGS += -ansi -fomit-frame-pointer -W -Wall -Wunreachable-code -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -D_XOPEN_SOURCE -D_GNU_SOURCE -DVERSION=\"$(VERSION)\"
+ override CFLAGS += $(shell getconf LFS_CFLAGS)
+ STATIC	=
+ MANDB	:= s@^\('\\\\\"\)[^\*-]*-\*- coding: [^[:blank:]]\+ -\*-@\1@

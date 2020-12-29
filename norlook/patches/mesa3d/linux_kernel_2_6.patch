@@ -1,0 +1,41 @@
+diff -Nura mesa3d-19.3.4/src/util/os_file.c mesa3d-19.3.4/src/util/os_file.c
+--- mesa3d-19.3.4/src/util/os_file.c	2020-12-28 20:51:53.879890335 +0700
++++ mesa3d-19.3.4/src/util/os_file.c	2020-12-28 21:03:49.079883472 +0700
+@@ -136,9 +136,13 @@
+ bool
+ os_same_file_description(int fd1, int fd2)
+ {
++#ifdef SYS_kcmp
+    pid_t pid = getpid();
+ 
+    return syscall(SYS_kcmp, pid, pid, KCMP_FILE, fd1, fd2) == 0;
++#else
++   return (fd1 == fd2) ? true : false;
++#endif
+ }
+ 
+ #else
+diff -Nura mesa3d-19.3.4/src/util/anon_file.c mesa3d-19.3.4/src/util/anon_file.c
+--- mesa3d-19.3.4/src/util/anon_file.c	2020-02-14 02:08:32.000000000 +0700
++++ mesa3d-19.3.4/src/util/anon_file.c	2020-12-29 03:01:14.011677700 +0700
+@@ -38,7 +38,7 @@
+ #include <sys/mman.h>
+ #elif defined(HAVE_MEMFD_CREATE) || defined(ANDROID)
+ #include <sys/syscall.h>
+-#include <linux/memfd.h>
++#include <sys/mman.h>
+ #include <stdlib.h>
+ #else
+ #include <stdio.h>
+diff -Nura mesa3d-19.3.4/src/drm-shim/device.c mesa3d-19.3.4/src/drm-shim/device.c
+--- mesa3d-19.3.4/src/drm-shim/device.c	2020-02-14 02:08:31.000000000 +0700
++++ mesa3d-19.3.4/src/drm-shim/device.c	2020-12-29 03:02:48.015676798 +0700
+@@ -29,7 +29,7 @@
+ 
+ #include <c11/threads.h>
+ #include <errno.h>
+-#include <linux/memfd.h>
++#include <sys/mman.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <stdlib.h>

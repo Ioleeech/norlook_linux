@@ -1,0 +1,28 @@
+diff -Nura libnl-3.5.0/include/linux-private/linux/netfilter/nfnetlink_log.h libnl-3.5.0/include/linux-private/linux/netfilter/nfnetlink_log.h
+--- libnl-3.5.0/include/linux-private/linux/netfilter/nfnetlink_log.h	2019-09-01 19:44:42.000000000 +0700
++++ libnl-3.5.0/include/linux-private/linux/netfilter/nfnetlink_log.h	2020-12-28 04:24:18.030472240 +0700
+@@ -9,6 +9,10 @@
+ #include <linux/types.h>
+ #include <linux/netfilter/nfnetlink.h>
+ 
++#ifndef __aligned_be64
++#define __aligned_be64 __be64 __attribute__((aligned(8)))
++#endif
++
+ enum nfulnl_msg_types {
+ 	NFULNL_MSG_PACKET,		/* packet from kernel to userspace */
+ 	NFULNL_MSG_CONFIG,		/* connect to a particular queue */
+diff -Nura libnl-3.5.0/include/linux-private/linux/netfilter/nfnetlink_queue.h libnl-3.5.0/include/linux-private/linux/netfilter/nfnetlink_queue.h
+--- libnl-3.5.0/include/linux-private/linux/netfilter/nfnetlink_queue.h	2019-09-01 19:44:42.000000000 +0700
++++ libnl-3.5.0/include/linux-private/linux/netfilter/nfnetlink_queue.h	2020-12-28 04:24:04.422472370 +0700
+@@ -5,6 +5,10 @@
+ #include <linux/types.h>
+ #include <linux/netfilter/nfnetlink.h>
+ 
++#ifndef __aligned_be64
++#define __aligned_be64 __be64 __attribute__((aligned(8)))
++#endif
++
+ enum nfqnl_msg_types {
+ 	NFQNL_MSG_PACKET,		/* packet from kernel to userspace */
+ 	NFQNL_MSG_VERDICT,		/* verdict from userspace to kernel */

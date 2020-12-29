@@ -7,43 +7,44 @@
 # action    == one of sysinit, respawn, askfirst, wait, and once
 # process   == program to run
 
+# Default runlevel
 id:3:initdefault:
 
 # Prepare /sys, /proc and remount rootfs in read-only mode
-si0::sysinit:/bin/mount -t sysfs sysfs /sys
-si1::sysinit:/bin/mount -t proc  proc  /proc
+si0::sysinit:/bin/mount -t proc  proc  /proc
+si1::sysinit:/bin/mount -t sysfs sysfs /sys
 si2::sysinit:/bin/mount / -o remount,ro
 
 # Prepare /dev
-# si3::sysinit:/bin/mount -t devtmpfs devtmpfs /dev
+si10::sysinit:/bin/mount -t tmpfs udev /dev
 
-si4::sysinit:/bin/mkdir -p /dev/pts
-si5::sysinit:/bin/mount -t devpts devpts /dev/pts -o gid=5,mode=620
+si11::sysinit:/bin/mkdir -p /dev/pts
+si12::sysinit:/bin/mount -t devpts devpts /dev/pts -o gid=5,mode=620
 
-si6::sysinit:/bin/mkdir -p /dev/shm
-si7::sysinit:/bin/mount -t tmpfs tmpfs /dev/shm -o mode=0777
+si13::sysinit:/bin/mkdir -p /dev/shm
+si14::sysinit:/bin/mount -t tmpfs tmpfs /dev/shm -o mode=0777
 
-si8::sysinit:/bin/mount -t tmpfs tmpfs /tmp
-si9::sysinit:/bin/mount -o bind  /tmp  /run
-si10::sysinit:/bin/mount -o bind /tmp  /var/log
-si11::sysinit:/bin/mount -o bind /tmp  /var/run
+si15::sysinit:/bin/mount -t tmpfs tmpfs /tmp
+si16::sysinit:/bin/mount -o bind  /tmp  /run
+si17::sysinit:/bin/mount -o bind  /tmp  /var/log
+si18::sysinit:/bin/mount -o bind  /tmp  /var/run
 
-si12::sysinit:/sbin/udevd -d
-si13::sysinit:/sbin/udevadm trigger --type=subsystems --action=add
-si14::sysinit:/sbin/udevadm trigger --type=devices    --action=add
-si15::sysinit:/sbin/udevadm settle  --timeout=30
+si20::sysinit:/sbin/mdev -s
 
 # Mount the rest
-si16::sysinit:/bin/mount -a
+si29::sysinit:/bin/mount -a
 
 # Set hostname
-si17::sysinit:/bin/hostname -F /etc/hostname
+si30::sysinit:/bin/hostname -F /etc/hostname
 
 # Startup the system
+#si::sysinit:/etc/init.d/rcS
 #rcS:12345:wait:/etc/init.d/rcS
 
 # Console on serial port
 #sole::respawn:/sbin/getty -L console 0 vt100
+#s0::respawn:/sbin/getty -L console 0 vt100
+#s1::respawn:/sbin/getty -L console 1 vt100
 
 # Virtual consoles
 c1:12345:respawn:/sbin/getty 38400 tty1
@@ -56,11 +57,11 @@ c7:12345:respawn:/sbin/getty 38400 tty7
 c8:12345:respawn:/sbin/getty 38400 tty8
 
 # Stuff to do for the 3-finger salute
-ca::ctrlaltdel:/sbin/reboot
+ca::ctrlaltdel:/sbin/shutdown -r now
 
 # Stuff to do before rebooting
 #shd0:06:wait:/etc/init.d/rcK
 
 # The usual halt or reboot actions
-hlt0:0:wait:/sbin/halt -dhp
-reb0:6:wait:/sbin/reboot
+hlt0:0:wait:/sbin/halt   -dhp
+reb0:6:wait:/sbin/reboot -d
