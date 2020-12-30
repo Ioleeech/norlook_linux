@@ -202,9 +202,6 @@ BR2_PACKAGE_GPM=y
 # SSH client/server
 BR2_PACKAGE_OPENSSH=y
 
-# ACPI (Advanced Configuration and Power Interface) event daemon
-BR2_PACKAGE_ACPID=y
-
 # OpenGL
 BR2_PACKAGE_MESA3D=y
 BR2_PACKAGE_MESA3D_DRI_DRIVER_SWRAST=y

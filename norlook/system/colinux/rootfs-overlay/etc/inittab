@@ -29,7 +29,7 @@ si16::sysinit:/bin/mount -o bind  /tmp  /run
 si17::sysinit:/bin/mount -o bind  /tmp  /var/log
 si18::sysinit:/bin/mount -o bind  /tmp  /var/run
 
-si20::sysinit:/sbin/mdev -s
+si20::sysinit:/sbin/mdev -d
 
 # Mount the rest
 si29::sysinit:/bin/mount -a
