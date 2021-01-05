@@ -1,0 +1,9 @@
+menu "Norlook-specific parameters"
+config BR2_NORLOOK_TOOLCHAIN_LABEL
+	string "Version string for toolchain package"
+	default "Norlook"
+endmenu
+
+menu "Norlook-specific packages"
+source "$BR2_EXTERNAL_NORLOOK_PATH/package/Config.in"
+endmenu
