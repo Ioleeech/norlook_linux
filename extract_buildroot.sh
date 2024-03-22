@@ -4,11 +4,11 @@
 CURRENT_DIR="$(pwd)"
 
 # Buildroot parameters
-BUILDROOT_VERSION="2020.02.8"
+BUILDROOT_VERSION="2024.02"
 BUILDROOT_URL="https://buildroot.org/downloads"
 
 BUILDROOT_GZIP="buildroot-${BUILDROOT_VERSION}.tar.gz"
-BUILDROOT_BZIP="buildroot-${BUILDROOT_VERSION}.tar.bz2"
+BUILDROOT_LZMA="buildroot-${BUILDROOT_VERSION}.tar.xz"
 
 # Get buildroot package
 if [ ! -d "${CURRENT_DIR}/distfiles" ]; then
