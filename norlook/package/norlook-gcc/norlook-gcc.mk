@@ -46,7 +46,7 @@ NORLOOK_GCC_CONF_OPTS = \
 	--disable-multilib \
 	--disable-decimal-float \
 	--with-pkgversion=$(NORLOOK_TOOLCHAIN_LABEL) \
-	--with-bugurl="https://github.com/Ioleeech/norlook_linux"
+	--with-bugurl="https://github.com/ioleeech/norlook_linux"
 
 # libmpx uses secure_getenv and struct _libc_fpstate not present in musl
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT_MUSL)$(BR2_TOOLCHAIN_GCC_AT_LEAST_6),yy)

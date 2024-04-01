@@ -16,6 +16,7 @@ define GLIBC_CONFIGURE_CMDS
 		--enable-shared \
 		$(if $(BR2_x86_64),--enable-lock-elision) \
 		--with-pkgversion=$(NORLOOK_TOOLCHAIN_LABEL) \
+		--with-bugurl="https://github.com/ioleeech/norlook_linux" \
 		--disable-profile \
 		--disable-werror \
 		--without-gd \
